@@ -4,9 +4,9 @@ namespace App\Clients;
 
 use Exception;
 use App\Entities\WebSupport\DnsRecords\A;
+use App\Entities\WebSupport\DnsRecordList;
 use App\Entities\WebSupport\DnsRecords\NS;
 use App\Entities\WebSupport\DnsRecords\MX;
-use App\Entities\WebSupport\DnsRecordList;
 use App\Entities\WebSupport\DnsRecords\TXT;
 use App\Entities\WebSupport\DnsRecords\SRV;
 use App\Entities\WebSupport\DnsRecords\AAAA;
@@ -40,61 +40,61 @@ class WebSupportClient extends Client
             throw new Exception($body['message']);
         }
 
-        $A_records     = [];
-        $AAAA_records  = [];
-        $ANAME_records = [];
-        $CNAME_records = [];
-        $MX_records    = [];
-        $NS_records    = [];
-        $SRV_records   = [];
-        $TXT_records   = [];
+        $a_records     = [];
+        $aaaa_records  = [];
+        $aname_records = [];
+        $cname_records = [];
+        $mx_records    = [];
+        $ns_records    = [];
+        $srv_records   = [];
+        $txt_records   = [];
 
         foreach ($body['items'] as $record) {
             if ($record['type'] === DnsRecord::A) {
-                $A_record = new A();
-                $A_record->fill($record);
-                $A_records[] = $A_record;
+                $A = new A();
+                $A->fill($record);
+                $a_records[] = $A;
             } else if ($record['type'] === DnsRecord::AAAA) {
-                $AAAA_record = new AAAA();
-                $AAAA_record->fill($record);
-                $AAAA_records[] = $AAAA_record;
+                $AAAA = new AAAA();
+                $AAAA->fill($record);
+                $aaaa_records[] = $AAAA;
             } else if ($record['type'] === DnsRecord::ANAME) {
-                $ANAME_record = new ANAME();
-                $ANAME_record->fill($record);
-                $ANAME_records[] = $ANAME_record;
+                $ANAME = new ANAME();
+                $ANAME->fill($record);
+                $aname_records[] = $ANAME;
             } else if ($record['type'] === DnsRecord::CNAME) {
-                $CNAME_record = new CNAME();
-                $CNAME_record->fill($record);
-                $CNAME_records[] = $CNAME_record;
+                $CNAME = new CNAME();
+                $CNAME->fill($record);
+                $cname_records[] = $CNAME;
             } else if ($record['type'] === DnsRecord::MX) {
-                $MX_record = new MX();
-                $MX_record->fill($record);
-                $MX_records[] = $MX_record;
+                $MX = new MX();
+                $MX->fill($record);
+                $mx_records[] = $MX;
             } else if ($record['type'] === DnsRecord::NS) {
-                $NS_record = new NS();
-                $NS_record->fill($record);
-                $NS_records[] = $NS_record;
+                $NS = new NS();
+                $NS->fill($record);
+                $ns_records[] = $NS;
             } else if ($record['type'] === DnsRecord::SRV) {
-                $SRV_record = new SRV();
-                $SRV_record->fill($record);
-                $SRV_records[] = $SRV_record;
+                $SRV = new SRV();
+                $SRV->fill($record);
+                $srv_records[] = $SRV;
             } else if ($record['type'] === DnsRecord::TXT) {
-                $TXT_record = new TXT();
-                $TXT_record->fill($record);
-                $TXT_records[] = $TXT_record;
+                $TXT = new TXT();
+                $TXT->fill($record);
+                $txt_records[] = $TXT;
             }
         }
 
         $dnsRecordList = new DnsRecordList();
 
-        $dnsRecordList->setARecords($A_records);
-        $dnsRecordList->setAAAARecords($AAAA_records);
-        $dnsRecordList->setANAMERecords($ANAME_records);
-        $dnsRecordList->setCNAMERecords($CNAME_records);
-        $dnsRecordList->setMXRecords($MX_records);
-        $dnsRecordList->setNSRecords($NS_records);
-        $dnsRecordList->setSRVRecords($SRV_records);
-        $dnsRecordList->setTXTRecords($TXT_records);
+        $dnsRecordList->setARecords($a_records);
+        $dnsRecordList->setAaaaRecords($aaaa_records);
+        $dnsRecordList->setAnameRecords($aname_records);
+        $dnsRecordList->setCnameRecords($cname_records);
+        $dnsRecordList->setMxRecords($mx_records);
+        $dnsRecordList->setNsRecords($ns_records);
+        $dnsRecordList->setSrvRecords($srv_records);
+        $dnsRecordList->setTxtRecords($txt_records);
 
         return $dnsRecordList;
     }
