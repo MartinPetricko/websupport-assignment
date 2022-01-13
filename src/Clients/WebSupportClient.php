@@ -106,7 +106,15 @@ class WebSupportClient extends Client
         $body = $response->json();
 
         if (!$response->successful() || $body['status'] !== 'success') {
-            throw new Exception($body['errors']['content']);
+            $error_message = '';
+
+            foreach ($body['errors'] as $field => $errors) {
+                foreach ($errors as $error) {
+                    $error_message .= "$field: $error\n";
+                }
+            }
+
+            throw new Exception($error_message);
         }
 
         unset($body['item']['zone']);

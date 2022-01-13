@@ -35,14 +35,22 @@ class DnsRecordController
 
         $dnsRecord->fill($request->input());
 
-        $this->webSupportClient->createRecord(env('APP_DOMAIN'), $dnsRecord);
+        try {
+            $this->webSupportClient->createRecord(env('APP_DOMAIN'), $dnsRecord);
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
 
         Response::redirect('/dns-records');
     }
 
     public function destroy(Request $request, string $dns_record_id): void
     {
-        $this->webSupportClient->deleteRecord(env('APP_DOMAIN'), $dns_record_id);
+        try {
+            $this->webSupportClient->deleteRecord(env('APP_DOMAIN'), $dns_record_id);
+        } catch (\Exception $e) {
+            die($e->getMessage());
+        }
 
         Response::redirect('/dns-records');
     }
