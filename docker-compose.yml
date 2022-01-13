@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  webserver:
+    build: ./docker/server
+    working_dir: /var/www/html
+    volumes:
+      - ./docker/server/sites-enabled/:/etc/apache2/sites-enabled:ro
+      - ./docker/server/php/php.ini:/etc/php/8.0/apache2/conf.d/php.ini
+      - ./:/var/www/html:cached,rw
+    ports:
+      - "${DOCKER_PORT:-8000}:80"
+    command: [ "/usr/sbin/apachectl", "-D", "FOREGROUND" ]
+
+  composer:
+    build: ./docker/server
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:cached,rw
+    entrypoint: [ "composer" ]
+    command: [ "-V" ]
+
+  php:
+    build: ./docker/server
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html:cached,rw
+    entrypoint: [ "php" ]
+    command: [ "-v" ]
+
+networks:
+  default:
